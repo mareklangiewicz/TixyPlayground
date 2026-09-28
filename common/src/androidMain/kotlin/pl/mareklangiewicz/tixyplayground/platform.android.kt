@@ -1,4 +1,4 @@
-package pl.mareklangiewicz.common
+package pl.mareklangiewicz.tixyplayground
 
 actual fun getPlatformName(): String {
     return "Android"

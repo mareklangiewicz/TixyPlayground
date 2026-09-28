@@ -1,4 +1,4 @@
-package pl.mareklangiewicz.common
+package pl.mareklangiewicz.tixyplayground
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text

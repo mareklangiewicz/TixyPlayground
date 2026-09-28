@@ -1,23 +1,24 @@
-buildscript {
-    repositories {
-        gradlePluginPortal()
-        jcenter()
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.20")
-        classpath("com.android.tools.build:gradle:4.0.2")
-    }
+
+// region [[Full Root Build Imports and Plugs]]
+
+import pl.mareklangiewicz.defaults.*
+import pl.mareklangiewicz.utils.*
+import pl.mareklangiewicz.deps.*
+import pl.mareklangiewicz.templatefun.*
+
+plugins {
+  plug(plugs.TemplateFun) apply false
+  plug(plugs.KotlinMulti) apply false
+  plug(plugs.KotlinJvm) apply false
+  plug(plugs.KotlinMultiCompose) apply false
+
+  plug(plugs.ComposeJb) apply false // ComposeJbEdge can be very slow to sync, clean, build (jb dev repo issue)
+
+  plug(plugs.AndroKmp) apply false
+  plug(plugs.AndroApp) apply false
+  plug(plugs.VannikPublish) apply false
 }
 
-group = "pl.mareklangiewicz"
-version = "0.1"
+// endregion [[Full Root Build Imports and Plugs]]
 
-allprojects {
-    repositories {
-        jcenter()
-        mavenCentral()
-        maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
-    }
-}
+defaultGroupAndVerAndDescription(gradle.extLib)

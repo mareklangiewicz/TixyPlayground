@@ -1,56 +1,28 @@
-import org.jetbrains.compose.compose
+
+// region [[Full MPP Lib Build Imports and Plugs]]
+
+import com.android.build.api.dsl.*
+import com.vanniktech.maven.publish.MavenPublishBaseExtension
+import org.jetbrains.compose.*
+import org.jetbrains.kotlin.gradle.dsl.*
+import org.jetbrains.kotlin.gradle.plugin.*
+import pl.mareklangiewicz.defaults.*
+import pl.mareklangiewicz.deps.*
+import pl.mareklangiewicz.utils.*
+import pl.mareklangiewicz.templatefun.*
 
 plugins {
-    kotlin("multiplatform")
-    id("org.jetbrains.compose") version "0.3.0-build133"
-    id("com.android.library")
-    id("kotlin-android-extensions")
+  plugAll(
+    plugs.TemplateFunNoVer, // version comes from the root: a versioned request here fails in composite builds
+    plugs.KotlinMulti,
+    plugs.KotlinMultiCompose,
+    plugs.ComposeJbNoVer,
+    plugs.VannikPublish,
+  )
+  plug(plugs.AndroKmpNoVer) apply false // applied conditionally by defaultBuildTemplateForFullMppLib
 }
 
-group = "pl.mareklangiewicz"
-version = "0.1"
+// endregion [[Full MPP Lib Build Imports and Plugs]]
 
-repositories {
-    google()
-}
 
-kotlin {
-    android()
-    jvm("desktop") {
-        compilations.all {
-            kotlinOptions.jvmTarget = "11"
-        }
-    }
-    sourceSets {
-        val commonMain by getting {
-            dependencies {
-                api(compose.runtime)
-                api(compose.foundation)
-                api(compose.material)
-            }
-        }
-        val commonTest by getting
-        val androidMain by getting {
-            dependencies {
-                api("androidx.appcompat:appcompat:1.2.0")
-                api("androidx.core:core-ktx:1.3.2")
-            }
-        }
-        val androidTest by getting {
-            dependencies {
-                implementation("junit:junit:4.13.1")
-            }
-        }
-        val desktopMain by getting
-        val desktopTest by getting
-    }
-}
-
-android {
-    compileSdkVersion(30)
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    defaultConfig {
-        minSdkVersion(24)
-        targetSdkVersion(30)
-    }
-}
+defaultBuildTemplateForFullMppLib()

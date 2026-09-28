@@ -1,38 +1,28 @@
-import org.jetbrains.compose.compose
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+
+// region [[Full MPP App Build Imports and Plugs]]
+
+import com.android.build.api.dsl.*
+import com.vanniktech.maven.publish.MavenPublishBaseExtension
+import org.jetbrains.compose.*
+import org.jetbrains.kotlin.gradle.dsl.*
+import org.jetbrains.kotlin.gradle.plugin.*
+import pl.mareklangiewicz.defaults.*
+import pl.mareklangiewicz.deps.*
+import pl.mareklangiewicz.utils.*
+import pl.mareklangiewicz.templatefun.*
 
 plugins {
-    kotlin("multiplatform")
-    id("org.jetbrains.compose") version "0.3.0-build133"
+  plugAll(
+    plugs.TemplateFunNoVer, // version comes from the root: a versioned request here fails in composite builds
+    plugs.KotlinMulti,
+    plugs.KotlinMultiCompose,
+    plugs.ComposeJbNoVer,
+  )
 }
 
-group = "pl.mareklangiewicz"
-version = "0.1"
+// endregion [[Full MPP App Build Imports and Plugs]]
 
-kotlin {
-    jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "11"
-        }
-    }
-    sourceSets {
-        val jvmMain by getting {
-            dependencies {
-                implementation(project(":common"))
-                implementation(compose.desktop.currentOs)
-            }
-        }
-        val jvmTest by getting
-    }
-}
 
-compose.desktop {
-    application {
-        mainClass = "MainKt"
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "tixy-playground"
-            vendor = "Marek Langiewicz"
-        }
-    }
+defaultBuildTemplateForFullMppApp {
+  implementation(project(":common"))
 }

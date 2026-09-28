@@ -1,3 +1,7 @@
+@file:Suppress("UnstableApiUsage")
+
+import pl.mareklangiewicz.deps.*
+import pl.mareklangiewicz.utils.extLib
 
 rootProject.name = "TixyPlayground"
 
@@ -29,7 +33,7 @@ pluginManagement {
 }
 
 plugins {
-  id("pl.mareklangiewicz.deps.settings") version "0.4.65" // https://plugins.gradle.org/search?term=mareklangiewicz
+  id("pl.mareklangiewicz.deps.settings") version "0.4.71" // https://plugins.gradle.org/search?term=mareklangiewicz
   id("com.gradle.develocity") version "4.6.0" // https://docs.gradle.com/develocity/gradle-plugin/
 }
 
@@ -50,8 +54,18 @@ develocity {
 
 // endregion [[My Settings Stuff]]
 
+gradle.extLib = lib(
+  info = myLibInfo(
+    name = "TixyPlayground",
+    description = "Play with compose on desktop and android. Mostly tixy-like graphics (https://tixy.land/).",
+    githubUrl = "https://github.com/mareklangiewicz/TixyPlayground",
+    version = Ver(0, 0, 2),
+  ),
+  withAndro = true,
+  compose = LibCompose(withComposeMaterial3 = false), // the code uses material (2)
+)
 
-include(":android")
-include(":desktop")
-include(":common")
+include(":common") // the compose lib: all the tixy code
+include(":desktop") // the desktop app
+include(":android") // the android app
 

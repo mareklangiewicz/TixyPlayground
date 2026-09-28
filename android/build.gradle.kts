@@ -1,32 +1,28 @@
+
+// region [[Andro App Build Imports and Plugs]]
+
+import com.android.build.api.dsl.*
+import org.jetbrains.kotlin.gradle.dsl.*
+import org.jetbrains.kotlin.gradle.plugin.*
+import com.vanniktech.maven.publish.*
+import pl.mareklangiewicz.defaults.*
+import pl.mareklangiewicz.deps.*
+import pl.mareklangiewicz.utils.*
+import pl.mareklangiewicz.templatefun.*
+
 plugins {
-    id("org.jetbrains.compose") version "0.3.0-build133"
-    id("com.android.application")
-    kotlin("android")
+  plugAll(
+    plugs.TemplateFunNoVer, // version comes from the root: a versioned request here fails in composite builds
+    plugs.AndroAppNoVer,
+    plugs.KotlinMultiCompose,
+    plugs.VannikPublish,
+  )
 }
 
-group = "pl.mareklangiewicz"
-version = "0.1"
+// endregion [[Andro App Build Imports and Plugs]]
 
-repositories {
-    google()
-}
+val lib = myLib(adjustInfo = { it.copy(namespace = "pl.mareklangiewicz.tixyplayground.androapp") })
 
-dependencies {
-    implementation(project(":common"))
-}
-
-android {
-    compileSdkVersion(30)
-    defaultConfig {
-        applicationId = "pl.mareklangiewicz.android"
-        minSdkVersion(24)
-        targetSdkVersion(30)
-        versionCode = 1
-        versionName = "1.0"
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
+defaultBuildTemplateForAndroApp(lib) {
+  implementation(project(":common"))
 }
